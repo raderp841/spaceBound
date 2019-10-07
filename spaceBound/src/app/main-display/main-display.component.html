@@ -1,0 +1,38 @@
+<div class="container">
+  <div *ngIf="isConvert">
+    <div class="col-xs-2 center-block"><strong>Currency Code</strong></div>
+    <div class="col-xs-2 center-block"><strong>Currency Name</strong></div>
+    <div class="col-xs-2 center-block"><strong>Local Amount</strong></div>
+    <div class="col-xs-2 center-block"><strong>Amount in USD</strong></div>
+    <br />
+    <hr />
+    <div>
+      <div *ngFor="let x of convertedData">
+        <div class="col-xs-2 center-block">{{x.currencyCode}}</div>
+        <div class="col-xs-2 center-block">{{x.currencyName}}</div>
+        <div class="col-xs-2 center-block">{{x.localAmount}}</div>
+        <div class="col-xs-2 center-block">{{x.amountInUSD}}</div>
+        <br />
+        <hr />
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!isConvert">
+    <div class="col-xs-2 center-block"><strong>Currency Code</strong></div>
+    <div class="col-xs-2 center-block"><strong>Currency Name</strong></div>
+    <div class="col-xs-2 center-block"><strong>Exchange Rate</strong></div>
+    <div class="col-xs-2 center-block"><strong>Time Updated</strong></div>
+    <br />
+    <hr />
+    <div>
+      <div *ngFor="let data of originalData">
+        <div class="col-xs-2 center-block">{{data.currencyCode}}</div>
+        <div class="col-xs-2 center-block">{{data.currencyName}}</div>
+        <div class="col-xs-2 center-block">{{data.exchangeRate}}</div>
+        <div class="col-xs-2 center-block">{{data.lastUpdatedTime}}</div>
+        <br />
+        <hr />
+      </div>
+    </div>
+  </div>
+</div>
