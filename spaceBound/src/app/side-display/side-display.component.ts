@@ -11,11 +11,17 @@ export class SideDisplayComponent implements OnInit, OnDestroy {
 
   isConvert: boolean = false;
   convertSub: Subscription;
+  isOrders: boolean = false;
+  isOrdersSub: Subscription;
+
   constructor(private dataService: DataServiceService) { }
   
   ngOnInit() {
     this.convertSub = this.dataService.isConvertSub.subscribe(
       c => this.isConvert = c
+    );
+    this.isOrdersSub = this.dataService.isOrdersSub.subscribe(
+      o => this.isOrders = o
     );
   }
 
@@ -30,9 +36,15 @@ export class SideDisplayComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.convertSub.unsubscribe();
+    this.isOrdersSub.unsubscribe();
   }
 
   onFetchData() {
     this.dataService.getOriginalData();
+  }
+
+  onShowOrders() {
+    this.dataService.switchToOrders();
+    this.dataService.getOrdersHttp();
   }
 }

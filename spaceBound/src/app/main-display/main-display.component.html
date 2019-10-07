@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="!isOrders">
   <div *ngIf="isConvert">
     <div class="col-xs-2 center-block"><strong>Currency Code</strong></div>
     <div class="col-xs-2 center-block"><strong>Currency Name</strong></div>
@@ -30,6 +30,26 @@
         <div class="col-xs-2 center-block">{{data.currencyName}}</div>
         <div class="col-xs-2 center-block">{{data.exchangeRate}}</div>
         <div class="col-xs-2 center-block">{{data.lastUpdatedTime}}</div>
+        <br />
+        <hr />
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container" *ngIf="isOrders">
+  <div>
+    <div class="col-xs-2 center-block"><strong>Order Date</strong></div>
+    <div class="col-xs-2 center-block"><strong>Currency Code</strong></div>
+    <div class="col-xs-2 center-block"><strong>Payment Amount</strong></div>
+    <div class="col-xs-2 center-block"><strong>Sales Tax Amount</strong></div>
+    <br />
+    <hr />
+    <div>
+      <div *ngFor="let order of orders">
+        <div class="col-xs-2 center-block">{{order.orderDate}}</div>
+        <div class="col-xs-2 center-block">{{order.currencyCode}}</div>
+        <div class="col-xs-2 center-block">{{order.paymentAmount}}</div>
+        <div class="col-xs-2 center-block">{{order.salesTaxAmount}}</div>
         <br />
         <hr />
       </div>

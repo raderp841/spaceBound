@@ -2,11 +2,14 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { OriginalDataModel } from './original-data-model';
 import { ConvertedDataModel } from './converted-data-model';
+import { HttpClient } from '@angular/common/http';
+import { OrderModel } from './order-model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataServiceService {
+
 
   originalData: OriginalDataModel[] = [
     new OriginalDataModel(1, 'United States Dollar', 'USD', 1, '12/12/1212'),
@@ -24,9 +27,14 @@ export class DataServiceService {
 
   isConvert: boolean = false;
   isConvertSub: Subject<boolean> = new Subject<boolean>();
+  isOrders: boolean = false;
+  isOrdersSub: Subject<boolean> = new Subject<boolean>();
   originalDataSub: Subject<OriginalDataModel[]> = new Subject<OriginalDataModel[]>();
   convertedDataSub: Subject<ConvertedDataModel[]> = new Subject<ConvertedDataModel[]>();
-  constructor() { }
+  orders: OrderModel[] = [];
+  ordersSub: Subject<OrderModel[]> = new Subject<OrderModel[]>();
+
+  constructor(private http: HttpClient) { }
 
   switchToConvert() {
     this.isConvert = true;
@@ -46,6 +54,20 @@ export class DataServiceService {
   getConvertedData() {
     this.convertedDataSub.next(this.convertedData);
     console.log(this.convertedData);
+  }
+
+  switchToOrders() {
+    this.isOrders = true;
+    this.isOrdersSub.next(this.isOrders);
+    console.log('switch orders');
+  }
+
+  getOrdersHttp() {
+    this.http.get<OrderModel[]>('https://localhost:44357/api/orders').
+      subscribe(res => {
+        this.orders = res;
+        this.ordersSub.next(this.orders);
+      });
   }
   
 }

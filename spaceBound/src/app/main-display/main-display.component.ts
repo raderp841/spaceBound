@@ -3,6 +3,7 @@ import { Subscription, Subject } from 'rxjs';
 import { DataServiceService } from '../data-service.service';
 import { OriginalDataModel } from '../original-data-model';
 import { ConvertedDataModel } from '../converted-data-model';
+import { OrderModel } from '../order-model';
 
 @Component({
   selector: 'app-main-display',
@@ -17,6 +18,10 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
   originalDataSub: Subscription;
   convertedData: ConvertedDataModel[] = [];
   convertedDataSub: Subscription;
+  isOrders = false;
+  isOrdersSub: Subscription;
+  orders: OrderModel[] = [];
+  ordersSub: Subscription;
 
   constructor(private dataService: DataServiceService) { }
 
@@ -32,12 +37,21 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     this.convertedDataSub = this.dataService.convertedDataSub.subscribe(
       d => this.convertedData = d
     );
+
+    this.isOrdersSub = this.dataService.isOrdersSub.subscribe(
+      o => this.isOrders = o
+    );
+
+    this.ordersSub = this.dataService.ordersSub.subscribe(
+      o => this.orders = o
+    );
   }
 
   ngOnDestroy() {
     this.isConvertSub.unsubscribe();
     this.convertedDataSub.unsubscribe();
     this.originalDataSub.unsubscribe();
+    this.isOrdersSub.unsubscribe();
   }
 
 }
