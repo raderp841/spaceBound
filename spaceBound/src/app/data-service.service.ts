@@ -12,10 +12,6 @@ export class DataServiceService {
 
 
   originalData: OriginalDataModel[] = [
-    new OriginalDataModel(1, 'United States Dollar', 'USD', 1, '12/12/1212'),
-    new OriginalDataModel(2, 'European Euro', 'ERO', 1.342, '12/12/1212'),
-    new OriginalDataModel(3, 'Philipino Peso', 'PHP', 43.2352, '12/12/1212'),
-    new OriginalDataModel(4, 'Canadian Dollar', 'CND', 1.22, '12/12/1212'),
   ];
 
   convertedData: ConvertedDataModel[] = [
@@ -47,13 +43,12 @@ export class DataServiceService {
   }
 
   getOriginalData() {
-    this.originalDataSub.next(this.originalData);
-    console.log(this.originalData);
+    this.getOriginalDataHttp();
   }
 
   getConvertedData() {
+    this.convertedData = this.convertData(this.originalData, this.orders);
     this.convertedDataSub.next(this.convertedData);
-    console.log(this.convertedData);
   }
 
   switchToOrders() {
@@ -63,11 +58,32 @@ export class DataServiceService {
   }
 
   getOrdersHttp() {
-    this.http.get<OrderModel[]>('https://localhost:44357/api/orders').
+    this.http.get<OrderModel[]>('http://spaceboundapi-dev.us-east-2.elasticbeanstalk.com/api/orders').
       subscribe(res => {
         this.orders = res;
         this.ordersSub.next(this.orders);
       });
   }
-  
+
+  getOriginalDataHttp() {
+    this.http.get<OriginalDataModel[]>('http://spaceboundapi-dev.us-east-2.elasticbeanstalk.com/api/currencies')
+      .subscribe((res) => {
+        this.originalData = res;
+        this.originalDataSub.next(this.originalData);
+        console.log(this.originalData);
+      });
+  }
+
+  convertData(originalData: OriginalDataModel[], orders: OrderModel[]) {
+    let convertedData: ConvertedDataModel[] = [];
+    orders.forEach(order => {
+      let convert: ConvertedDataModel = null;
+      convert.currencyCode = order.currencyCode;
+      convert.currencyName = originalData.find(og => og.currencyCode == order.currencyCode).currencyName;
+      convert.localAmount = order.paymentAmount;
+      convert.amountInUSD = (order.paymentAmount * (originalData.find(og => og.currencyCode == order.currencyCode)).exchangeRate);
+      convertedData.push(convert);
+    });
+    return convertedData;
+  }
 }
