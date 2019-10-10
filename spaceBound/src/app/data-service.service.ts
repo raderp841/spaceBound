@@ -58,15 +58,16 @@ export class DataServiceService {
   }
 
   getOrdersHttp() {
-    this.http.get<OrderModel[]>('http://spaceboundapi-dev.us-east-2.elasticbeanstalk.com/api/orders').
+    this.http.get<OrderModel[]>('https://www.peterlrader.com/api/orders').
       subscribe(res => {
         this.orders = res;
+        console.log('plr');
         this.ordersSub.next(this.orders);
       });
   }
 
   getOriginalDataHttp() {
-    this.http.get<OriginalDataModel[]>('http://spaceboundapi-dev.us-east-2.elasticbeanstalk.com/api/currencies')
+    this.http.get<OriginalDataModel[]>('https://www.peterlrader/api/currencies')
       .subscribe((res) => {
         this.originalData = res;
         this.originalDataSub.next(this.originalData);

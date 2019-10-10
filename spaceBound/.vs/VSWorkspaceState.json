@@ -1,10 +1,12 @@
 {
   "ExpandedNodes": [
     "",
+    "\\dist\\spaceBound",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\side-display"
+    "\\src\\app\\side-display",
+    "\\src\\environments"
   ],
-  "SelectedNode": "\\src\\app\\data-service.service.ts",
+  "SelectedNode": "\\angular.json",
   "PreviewInSolutionExplorer": false
 }
