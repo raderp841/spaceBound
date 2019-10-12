@@ -14,6 +14,8 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
 
   isConvert: boolean = false;
   isConvertSub: Subscription;
+  isGrouped: boolean = false;
+  isGroupedSub: Subscription;
   originalData: OriginalDataModel[] = [];
   originalDataSub: Subscription;
   convertedData: ConvertedDataModel[] = [];
@@ -45,6 +47,11 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     this.ordersSub = this.dataService.ordersSub.subscribe(
       o => this.orders = o
     );
+  }
+
+  onGroup() {
+    this.dataService.groupData(this.isGrouped);
+    this.isGrouped = !this.isGrouped;
   }
 
   ngOnDestroy() {

@@ -9,17 +9,10 @@ import { OrderModel } from './order-model';
   providedIn: 'root'
 })
 export class DataServiceService {
-
-
-  originalData: OriginalDataModel[] = [
-  ];
-
-  convertedData: ConvertedDataModel[] = [
-    new ConvertedDataModel(1, 'USD', 'United States Dollar', 4212.23, 4212.23),
-    new ConvertedDataModel(2, 'CND', 'Canadian Dollar', 45.32, 38.22),
-    new ConvertedDataModel(3, 'PHP', 'Philipino Peso', 10534.85, 260.36),
-    new ConvertedDataModel(4, 'ERO', 'European Euro', 847.41, 755.03),
-  ];
+  
+  originalData: OriginalDataModel[] = [];
+  convertedData: ConvertedDataModel[] = [];
+  convertedDataGrouped: ConvertedDataModel[] = [];
 
   isConvert: boolean = false;
   isConvertSub: Subject<boolean> = new Subject<boolean>();
@@ -47,8 +40,23 @@ export class DataServiceService {
   }
 
   getConvertedData() {
-    this.convertedData = this.convertData(this.originalData, this.orders);
-    this.convertedDataSub.next(this.convertedData);
+
+    if (this.orders = []) {
+      this.http.get<OrderModel[]>('https://www.peterlrader.com/api/orders').
+        subscribe(res => {
+          this.orders = res;
+          this.ordersSub.next(this.orders);
+          this.convertedData = this.convertData(this.originalData, this.orders);
+          this.convertedDataSub.next(this.convertedData);
+          console.log('new orders');
+        });
+    }
+    else {
+      this.convertedData = this.convertData(this.originalData, this.orders);
+      this.convertedDataSub.next(this.convertedData);
+      console.log('orders already loaded');
+    }
+    
   }
 
   switchToOrders() {
@@ -58,33 +66,58 @@ export class DataServiceService {
   }
 
   getOrdersHttp() {
-    this.http.get<OrderModel[]>('https://www.peterlrader.com/api/orders').
+    //this.http.get<OrderModel[]>('https://www.peterlrader.com/api/orders').   //aws server
+    this.http.get<OrderModel[]>('https://localhost:44357/api/orders').         // local
       subscribe(res => {
         this.orders = res;
-        console.log('plr');
         this.ordersSub.next(this.orders);
       });
   }
 
   getOriginalDataHttp() {
-    this.http.get<OriginalDataModel[]>('https://www.peterlrader/api/currencies')
+    //this.http.get<OriginalDataModel[]>('https://www.peterlrader.com/api/currencies')  //aws server
+    this.http.get<OriginalDataModel[]>('https://localhost:44357/api/currencies')  // local
       .subscribe((res) => {
         this.originalData = res;
         this.originalDataSub.next(this.originalData);
-        console.log(this.originalData);
       });
   }
 
   convertData(originalData: OriginalDataModel[], orders: OrderModel[]) {
     let convertedData: ConvertedDataModel[] = [];
     orders.forEach(order => {
-      let convert: ConvertedDataModel = null;
+      let convert: ConvertedDataModel = new ConvertedDataModel(-1, '','',0,0);
       convert.currencyCode = order.currencyCode;
       convert.currencyName = originalData.find(og => og.currencyCode == order.currencyCode).currencyName;
       convert.localAmount = order.paymentAmount;
-      convert.amountInUSD = (order.paymentAmount * (originalData.find(og => og.currencyCode == order.currencyCode)).exchangeRate);
+      convert.amountInUSD = (order.paymentAmount / (originalData.find(og => og.currencyCode == order.currencyCode)).exchangeRate);
       convertedData.push(convert);
     });
     return convertedData;
+  }
+
+  groupData(isGrouped: boolean) {
+    if (isGrouped) {
+      this.getOriginalData();
+    }
+    else {
+      console.log('logic to group');
+      this.convertedData.forEach(d => {
+        if (this.convertedDataGrouped.some(cd => d.currencyCode === cd.currencyCode)) {
+          for (let i = 0; i < this.convertedDataGrouped.length; i++) {
+            if (this.convertedDataGrouped[i].currencyCode === d.currencyCode) {
+              this.convertedDataGrouped[i].amountInUSD += d.amountInUSD;
+              this.convertedDataGrouped[i].localAmount += d.localAmount;
+              break;
+            }
+          }
+        }
+        else {
+          this.convertedDataGrouped.push(d);
+        }
+      });
+      this.convertedDataGrouped.sort((a, b) => (a.amountInUSD < b.amountInUSD) ? 1 : -1);
+      this.convertedDataSub.next(this.convertedDataGrouped);
+    }
   }
 }
