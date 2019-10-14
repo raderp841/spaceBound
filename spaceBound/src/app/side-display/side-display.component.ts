@@ -54,4 +54,8 @@ export class SideDisplayComponent implements OnInit, OnDestroy {
   onHideOrders() {
     this.dataService.switchFromOrders();
   }
+
+  onClearData() {
+    this.dataService.clearData();
+  }
 }

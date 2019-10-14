@@ -1,0 +1,9 @@
+@media screen and (max-width: 479px) {
+  .col-xxs-12 {
+    float: left;
+  }
+
+  .col-xxs-12 {
+    width: 100% !important;
+  }
+}

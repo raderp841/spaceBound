@@ -1,22 +1,22 @@
 <div class="">
-  <div class="col-md-12 col-sm-5 col-xs-5">
-    <button class="btn btn-primary btn-block" (click)="onFetchData()">Fetch new data</button>
+  <div class="col-md-12 col-sm-5 col-xs-5 col-xxs-12 top-buffer">
+    <button class="btn btn-primary btn-block" (click)="onFetchData()">Get Data</button>
   </div>
-    <div *ngIf="!isConvert" class="col-md-12 col-sm-5 col-xs-5 top-buffer">
+    <div *ngIf="!isConvert" class="col-md-12 col-sm-5 col-xs-5 col-xxs-12 top-buffer">
     <button class="btn btn-success btn-block" (click)="onConvert()">Covert Data</button>
   </div>
-  <div *ngIf="isConvert" class="col-md-12 col-sm-5 col-xs-5 top-buffer">
+  <div *ngIf="isConvert" class="col-md-12 col-sm-5 col-xs-5 col-xxs-12 top-buffer">
     <button class="btn btn-success btn-block" (click)="onOriginalData()">Original Data</button>
   </div>
-  <div class="col-md-12 col-sm-5 col-xs-5 top-buffer" *ngIf="!isOrders">
+  <div class="col-md-12 col-sm-5 col-xs-5 col-xxs-12 top-buffer" *ngIf="!isOrders">
     <button class="btn btn-primary btn-block" (click)="onShowOrders()">Show Orders</button>
   </div>
-  <div class="col-md-12 col-sm-5 col-xs-5 top-buffer" *ngIf="isOrders">
+  <div class="col-md-12 col-sm-5 col-xs-5 col-xxs-12 top-buffer" *ngIf="isOrders">
     <button class="btn btn-primary btn-block" (click)="onHideOrders()">Hide Orders</button>
   </div>
 </div>
-<div class="col-md-12 col-sm-5 col-xs-5 top-buffer">
-  <button class="btn btn-danger btn-block">Clear data</button>
+<div class="col-md-12 col-sm-5 col-xs-5 col-xxs-12 top-buffer">
+  <button class="btn btn-danger btn-block" (click)="onClearData()">Clear data</button>
 </div>
 
 

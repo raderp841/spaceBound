@@ -137,6 +137,26 @@ export class DataServiceService {
     }
   }
 
+  clearData() {
+    this.orders.length = 0;
+    this.convertedData.length = 0;
+    this.convertedDataGrouped.length = 0;
+    this.originalData.length = 0;
+  }
+
+  updateExchangeRates() {
+    this.getExchangeRatesHTTP();
+  }
+
+  getExchangeRatesHTTP() {
+    this.http.post<OriginalDataModel[]>('https://localhost:44357/api/currencies', '')
+      .subscribe(res => {
+        this.originalData = res;
+        this.originalDataSub.next(this.originalData);
+        console.log(res);
+      });
+  }
+
   groupData(isGrouped: boolean) {
     if (isGrouped) {
       this.convertedData.length = 0;

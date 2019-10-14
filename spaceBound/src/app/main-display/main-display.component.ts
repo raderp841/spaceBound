@@ -68,6 +68,10 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     this.dataService.searchForCode(input.value, currentList);
   }
 
+  onUpdateExchangeRates() {
+    this.dataService.updateExchangeRates();
+  }
+
   ngOnDestroy() {
     this.isConvertSub.unsubscribe();
     this.convertedDataSub.unsubscribe();
