@@ -28,10 +28,12 @@ export class SideDisplayComponent implements OnInit, OnDestroy {
   onConvert() {
     this.dataService.getConvertedData();
     this.dataService.switchToConvert();
+    this.onHideOrders;
   }
 
   onOriginalData() {
     this.dataService.switchToUnconvert();
+    this.onHideOrders();
   }
 
   ngOnDestroy() {
@@ -41,10 +43,15 @@ export class SideDisplayComponent implements OnInit, OnDestroy {
 
   onFetchData() {
     this.dataService.getOriginalData();
+    this.onHideOrders();
   }
 
   onShowOrders() {
     this.dataService.switchToOrders();
     this.dataService.getOrdersHttp();
+  }
+
+  onHideOrders() {
+    this.dataService.switchFromOrders();
   }
 }

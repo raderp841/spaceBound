@@ -1,19 +1,23 @@
-<button class="btn btn-primary center-block" (click)="onFetchData()">Fetch new data</button>
-<br />
-<hr />
-<button class="btn btn-danger center-block">Clear data</button>
-<br />
-<hr />
-<div *ngIf="!isConvert">
-  <button class="btn btn-success center-block" (click)="onConvert()">Covert Data</button>
+<div class="">
+  <div class="col-md-12 col-sm-5 col-xs-5">
+    <button class="btn btn-primary btn-block" (click)="onFetchData()">Fetch new data</button>
+  </div>
+    <div *ngIf="!isConvert" class="col-md-12 col-sm-5 col-xs-5 top-buffer">
+    <button class="btn btn-success btn-block" (click)="onConvert()">Covert Data</button>
+  </div>
+  <div *ngIf="isConvert" class="col-md-12 col-sm-5 col-xs-5 top-buffer">
+    <button class="btn btn-success btn-block" (click)="onOriginalData()">Original Data</button>
+  </div>
+  <div class="col-md-12 col-sm-5 col-xs-5 top-buffer" *ngIf="!isOrders">
+    <button class="btn btn-primary btn-block" (click)="onShowOrders()">Show Orders</button>
+  </div>
+  <div class="col-md-12 col-sm-5 col-xs-5 top-buffer" *ngIf="isOrders">
+    <button class="btn btn-primary btn-block" (click)="onHideOrders()">Hide Orders</button>
+  </div>
 </div>
-<div *ngIf="isConvert">
-  <button class="btn btn-success center-block" (click)="onOriginalData()">Original Data</button>
+<div class="col-md-12 col-sm-5 col-xs-5 top-buffer">
+  <button class="btn btn-danger btn-block">Clear data</button>
 </div>
-<br />
-<hr />
-<div>
-  <button class="btn btn-primary center-block"(click)="onShowOrders()">Show Orders</button>
-</div>
+
 
 

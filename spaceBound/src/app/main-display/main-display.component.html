@@ -1,41 +1,50 @@
-<div class="container">
-  <div class="row">Search box</div>
+<div class="container border">
   <div class="row">
+    <form class="form-group">
+      <div class="input-group">
+        <i class="glyphicon glyphicon-search"></i>
+        <input class="form-control" type="search" name="search" value="" placeholder="search" (keyup)="onKeyUpSearch($event.target)" />
+      </div>
+    </form>
+  </div>
+  <div class="row" *ngIf="!isOrders && isConvert">
     <button *ngIf="!isGrouped" class="btn btn-sm btn-primary" (click)="onGroup()">Group</button>
     <button *ngIf="isGrouped" class="btn btn-sm btn-primary" (click)="onGroup()">UnGroup</button>
+    <br />
+    <br />
   </div>
   <div class="container" *ngIf="!isOrders">
     <div *ngIf="isConvert">
-      <div class="col-xs-2 center-block"><strong>Currency Code</strong></div>
-      <div class="col-xs-2 center-block"><strong>Currency Name</strong></div>
-      <div class="col-xs-2 center-block"><strong>Local Amount</strong></div>
-      <div class="col-xs-2 center-block"><strong>Amount in USD</strong></div>
+      <div class="col-md-2 col-sm-4 col-xs-4 center-block"><strong>Currency Code</strong></div>
+      <div class="col-md-2 hidden-sm hidden-xs center-block"><strong>Currency Name</strong></div>
+      <div class="col-md-2 hidden-sm hidden-xs center-block"><strong>Local Amount</strong></div>
+      <div class="col-md-2 col-sm-4 col-xs-4 center-block"><strong>Amount in USD</strong></div>
       <br />
       <hr />
       <div>
         <div *ngFor="let x of convertedData">
-          <div class="col-xs-2 center-block">{{x.currencyCode}}</div>
-          <div class="col-xs-2 center-block">{{x.currencyName}}</div>
-          <div class="col-xs-2 center-block">{{x.localAmount | number : '1.2-2'}}</div>
-          <div class="col-xs-2 center-block">{{x.amountInUSD | currency}}</div>
+          <div class="col-md-2 col-sm-4 col-xs-4 center-block">{{x.currencyCode}}</div>
+          <div class="col-md-2 hidden-sm hidden-xs center-block">{{x.currencyName}}</div>
+          <div class="col-md-2 hidden-sm hidden-xs center-block">{{x.localAmount | number : '1.2-2'}}</div>
+          <div class="col-md-2 col-sm-4 col-xs-4 center-block">{{x.amountInUSD | currency}}</div>
           <br />
           <hr />
         </div>
       </div>
     </div>
     <div *ngIf="!isConvert">
-      <div class="col-xs-2 center-block"><strong>Currency Code</strong></div>
-      <div class="col-xs-2 center-block"><strong>Currency Name</strong></div>
-      <div class="col-xs-2 center-block"><strong>Exchange Rate</strong></div>
-      <div class="col-xs-2 center-block"><strong>Time Updated</strong></div>
+      <div class="col-md-2 col-sm-4 col-xs-4 center-block"><strong>Currency Code</strong></div>
+      <div class="col-md-2 hidden-sm hidden-xs"><strong>Currency Name</strong></div>
+      <div class="col-md-2 col-sm-4 col-xs-4 center-block"><strong>Exchange Rate</strong></div>
+      <div class="col-md-2 hidden-sm hidden-xs"><strong>Time Updated</strong></div>
       <br />
       <hr />
       <div>
         <div *ngFor="let data of originalData">
-          <div class="col-xs-2 center-block">{{data.currencyCode}}</div>
-          <div class="col-xs-2 center-block">{{data.currencyName}}</div>
-          <div class="col-xs-2 center-block">{{data.exchangeRate}}</div>
-          <div class="col-xs-2 center-block">{{data.lastUpdatedTime}}</div>
+          <div class="col-md-2 col-sm-4 col-xs-4 center-block">{{data.currencyCode}}</div>
+          <div class="col-md-2 center-block hidden-sm hidden-xs">{{data.currencyName}}</div>
+          <div class="col-md-2 col-sm-4 col-xs-4 center-block">{{data.exchangeRate}}</div>
+          <div class="col-md-2 center-block hidden-sm hidden-xs">{{data.lastUpdatedTime}}</div>
           <br />
           <hr />
         </div>
@@ -44,18 +53,18 @@
   </div>
   <div class="container" *ngIf="isOrders">
     <div>
-      <div class="col-xs-2 center-block"><strong>Order Date</strong></div>
-      <div class="col-xs-2 center-block"><strong>Currency Code</strong></div>
-      <div class="col-xs-2 center-block"><strong>Payment Amount</strong></div>
-      <div class="col-xs-2 center-block"><strong>Sales Tax Amount</strong></div>
+      <div class="col-md-2 center-block hidden-sm hidden-xs"><strong>Order Date</strong></div>
+      <div class="col-md-2 col-sm-4 col-xs-4 center-block"><strong>Currency Code</strong></div>
+      <div class="col-md-2 col-sm-4 col-xs-4 center-block"><strong>Payment Amount</strong></div>
+      <div class="col-md-2 center-block hidden-sm hidden-xs"><strong>Sales Tax Amount</strong></div>
       <br />
       <hr />
       <div>
         <div *ngFor="let order of orders">
-          <div class="col-xs-2 center-block">{{order.orderDate}}</div>
-          <div class="col-xs-2 center-block">{{order.currencyCode}}</div>
-          <div class="col-xs-2 center-block">{{order.paymentAmount}}</div>
-          <div class="col-xs-2 center-block">{{order.salesTaxAmount}}</div>
+          <div class="col-md-2 center-block hidden-sm hidden-xs">{{order.orderDate}}</div>
+          <div class="col-md-2 col-sm-4 col-xs-4">{{order.currencyCode}}</div>
+          <div class="col-md-2 col-sm-4 col-xs-4">{{order.paymentAmount}}</div>
+          <div class="col-md-2 center-block hidden-sm hidden-xs">{{order.salesTaxAmount}}</div>
           <br />
           <hr />
         </div>

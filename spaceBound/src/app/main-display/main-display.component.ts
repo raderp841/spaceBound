@@ -54,6 +54,20 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     this.isGrouped = !this.isGrouped;
   }
 
+  onKeyUpSearch(input: HTMLInputElement) {
+    let currentList = 0;
+    if (this.isOrders) {
+      currentList = 1;
+    }
+    else if (!this.isOrders && !this.isGrouped && this.isConvert) {
+      currentList = 2;
+    }
+    else if (!this.isOrders && !this.isGrouped && !this.isConvert) {
+      currentList = 3;
+    }
+    this.dataService.searchForCode(input.value, currentList);
+  }
+
   ngOnDestroy() {
     this.isConvertSub.unsubscribe();
     this.convertedDataSub.unsubscribe();

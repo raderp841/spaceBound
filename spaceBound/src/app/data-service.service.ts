@@ -42,7 +42,8 @@ export class DataServiceService {
   getConvertedData() {
 
     if (this.orders = []) {
-      this.http.get<OrderModel[]>('https://www.peterlrader.com/api/orders').
+      //this.http.get<OrderModel[]>('https://www.peterlrader.com/api/orders').
+      this.http.get<OrderModel[]>('https://localhost:44357/api/orders').
         subscribe(res => {
           this.orders = res;
           this.ordersSub.next(this.orders);
@@ -63,6 +64,11 @@ export class DataServiceService {
     this.isOrders = true;
     this.isOrdersSub.next(this.isOrders);
     console.log('switch orders');
+  }
+
+  switchFromOrders() {
+    this.isOrders = false;
+    this.isOrdersSub.next(this.isOrders);
   }
 
   getOrdersHttp() {
@@ -96,28 +102,68 @@ export class DataServiceService {
     return convertedData;
   }
 
+  searchForCode(searchInput: string, currentList: number) {
+    searchInput = searchInput.toLowerCase();
+    if (currentList === 1) { //orders
+      let orderCopy = this.orders.slice();
+      let matchedOrders: OrderModel[] = [];
+      orderCopy.forEach(o => {
+        if (o.currencyCode.toLowerCase().includes(searchInput)) {
+          matchedOrders.push(o);
+        }
+      });
+      console.log(searchInput);
+      this.ordersSub.next(matchedOrders);
+    }
+    else if (currentList === 2) { //converted
+      let convertCopy = this.convertedData.slice();
+      let matchedCD: ConvertedDataModel[] = [];
+      convertCopy.forEach(cd => {
+        if (cd.currencyCode.toLowerCase().includes(searchInput) || cd.currencyName.toLowerCase().includes(searchInput)) {
+          matchedCD.push(cd);
+        }
+      });
+      this.convertedDataSub.next(matchedCD);
+    }
+    else if (currentList === 3) { //original data
+      let originalCopy = this.originalData.slice();
+      let matchedOG: OriginalDataModel[] = [];
+      originalCopy.forEach(og => {
+        if (og.currencyCode.toLowerCase().includes(searchInput) || og.currencyName.toLowerCase().includes(searchInput)) {
+          matchedOG.push(og);
+        }
+      });
+      this.originalDataSub.next(matchedOG);
+    }
+  }
+
   groupData(isGrouped: boolean) {
     if (isGrouped) {
-      this.getOriginalData();
+      this.convertedData.length = 0;
+      this.convertedData = this.convertData(this.originalData, this.orders);
+      this.convertedDataSub.next(this.convertedData);
+      
     }
     else {
-      console.log('logic to group');
-      this.convertedData.forEach(d => {
-        if (this.convertedDataGrouped.some(cd => d.currencyCode === cd.currencyCode)) {
-          for (let i = 0; i < this.convertedDataGrouped.length; i++) {
-            if (this.convertedDataGrouped[i].currencyCode === d.currencyCode) {
-              this.convertedDataGrouped[i].amountInUSD += d.amountInUSD;
-              this.convertedDataGrouped[i].localAmount += d.localAmount;
+      let conD = this.convertedData.slice();
+      let conDG: ConvertedDataModel[] = []
+      conD.forEach(d => {
+        if (conDG.some(cd => d.currencyCode === cd.currencyCode)) {
+          for (let i = 0; i < conDG.length; i++) {
+            if (conDG[i].currencyCode === d.currencyCode) {
+              conDG[i].amountInUSD += d.amountInUSD;
+              conDG[i].localAmount += d.localAmount;
               break;
             }
           }
         }
         else {
-          this.convertedDataGrouped.push(d);
+          conDG.push(d);
         }
       });
-      this.convertedDataGrouped.sort((a, b) => (a.amountInUSD < b.amountInUSD) ? 1 : -1);
-      this.convertedDataSub.next(this.convertedDataGrouped);
+      conDG.sort((a, b) => (a.amountInUSD < b.amountInUSD) ? 1 : -1);
+      this.convertedDataSub.next(conDG);
+      console.log(conDG);
     }
   }
 }
