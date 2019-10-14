@@ -42,8 +42,8 @@ export class DataServiceService {
   getConvertedData() {
 
     if (this.orders = []) {
-      //this.http.get<OrderModel[]>('https://www.peterlrader.com/api/orders').
-      this.http.get<OrderModel[]>('https://localhost:44357/api/orders').
+      this.http.get<OrderModel[]>('https://www.peterlrader.com/api/orders').
+      //this.http.get<OrderModel[]>('https://localhost:44357/api/orders').
         subscribe(res => {
           this.orders = res;
           this.ordersSub.next(this.orders);
@@ -72,8 +72,8 @@ export class DataServiceService {
   }
 
   getOrdersHttp() {
-    //this.http.get<OrderModel[]>('https://www.peterlrader.com/api/orders').   //aws server
-    this.http.get<OrderModel[]>('https://localhost:44357/api/orders').         // local
+    this.http.get<OrderModel[]>('https://www.peterlrader.com/api/orders').   //aws server
+    //this.http.get<OrderModel[]>('https://localhost:44357/api/orders').         // local
       subscribe(res => {
         this.orders = res;
         this.ordersSub.next(this.orders);
@@ -81,8 +81,8 @@ export class DataServiceService {
   }
 
   getOriginalDataHttp() {
-    //this.http.get<OriginalDataModel[]>('https://www.peterlrader.com/api/currencies')  //aws server
-    this.http.get<OriginalDataModel[]>('https://localhost:44357/api/currencies')  // local
+    this.http.get<OriginalDataModel[]>('https://www.peterlrader.com/api/currencies')  //aws server
+    //this.http.get<OriginalDataModel[]>('https://localhost:44357/api/currencies')  // local
       .subscribe((res) => {
         this.originalData = res;
         this.originalDataSub.next(this.originalData);
@@ -149,7 +149,8 @@ export class DataServiceService {
   }
 
   getExchangeRatesHTTP() {
-    this.http.post<OriginalDataModel[]>('https://localhost:44357/api/currencies', '')
+    //this.http.post<OriginalDataModel[]>('https://localhost:44357/api/currencies', '')
+    this.http.post<OriginalDataModel[]>('https://peterlrader.com/api/currencies', '')
       .subscribe(res => {
         this.originalData = res;
         this.originalDataSub.next(this.originalData);
